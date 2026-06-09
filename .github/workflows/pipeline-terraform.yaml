@@ -7,6 +7,13 @@ on:
         required: true
       SONAR_HOST_URL:
         required: true
+      CLOUDFLARE_BASE64ENCODEDPEMFILE:
+        required: false
+      CLOUDFLARE_BASE64ENCODEDCONFIGJSONFILE:
+        required: false
+      CLOUDFLARE_TUNEL_ID:
+        required: false
+
     inputs:
       deploy:
         description: Faz deploy da aplicacao
@@ -32,6 +39,10 @@ jobs:
         run: terraform init
 
       - name: Plan
+        env:
+          TF_VAR_cloudflare_base64EncodedPemFile: ${{ secrets.CLOUDFLARE_BASE64ENCODEDPEMFILE }}
+          TF_VAR_cloudflare_base64EncodedConfigJsonFile: ${{ secrets.CLOUDFLARE_BASE64ENCODEDCONFIGJSONFILE }}
+          TF_VAR_cloudflare_tunel_id: ${{ secrets.CLOUDFLARE_TUNEL_ID }}
         run: terraform plan -out=tfplan
 
       - name: Upload do plano como artefato
@@ -57,6 +68,10 @@ jobs:
         with:
           name: plano-binario
       - name: Apply
+        env:
+          TF_VAR_cloudflare_base64EncodedPemFile: ${{ secrets.CLOUDFLARE_BASE64ENCODEDPEMFILE }}
+          TF_VAR_cloudflare_base64EncodedConfigJsonFile: ${{ secrets.CLOUDFLARE_BASE64ENCODEDCONFIGJSONFILE }}
+          TF_VAR_cloudflare_tunel_id: ${{ secrets.CLOUDFLARE_TUNEL_ID }}
         run: terraform apply -auto-approve tfplan
 
       - name: Resultado
