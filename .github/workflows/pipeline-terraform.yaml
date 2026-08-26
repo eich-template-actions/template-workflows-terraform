@@ -13,6 +13,10 @@ on:
         required: false
       CLOUDFLARE_TUNEL_ID:
         required: false
+      CLOUDFLARE_ZONE_ID:
+        required: false
+      CLOUDFLARE_API_TOKEN:
+        required: false
 
     inputs:
       deploy:
@@ -43,6 +47,8 @@ jobs:
           TF_VAR_cloudflare_base64EncodedPemFile: ${{ secrets.CLOUDFLARE_BASE64ENCODEDPEMFILE }}
           TF_VAR_cloudflare_base64EncodedConfigJsonFile: ${{ secrets.CLOUDFLARE_BASE64ENCODEDCONFIGJSONFILE }}
           TF_VAR_cloudflare_tunel_id: ${{ secrets.CLOUDFLARE_TUNEL_ID }}
+          TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: terraform plan -out=tfplan
 
       - name: Upload do plano como artefato
@@ -72,6 +78,8 @@ jobs:
           TF_VAR_cloudflare_base64EncodedPemFile: ${{ secrets.CLOUDFLARE_BASE64ENCODEDPEMFILE }}
           TF_VAR_cloudflare_base64EncodedConfigJsonFile: ${{ secrets.CLOUDFLARE_BASE64ENCODEDCONFIGJSONFILE }}
           TF_VAR_cloudflare_tunel_id: ${{ secrets.CLOUDFLARE_TUNEL_ID }}
+          TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: terraform apply -auto-approve tfplan
 
       - name: Resultado
